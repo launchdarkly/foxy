@@ -1,5 +1,6 @@
 //
 // Copyright (c) 2018-2019 Christian Mazakas (christian dot mazakas at gmail dot com)
+// Copyright (c) 2023 Catamorphic Co. d/b/a LaunchDarkly
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -77,6 +78,12 @@ public:
     typename boost::asio::async_result<std::decay_t<RequestHandler>,
                                        void(boost::system::error_code)>::return_type;
 
+  template <class Request, class ResponseParser, class RequestHandler>
+  auto
+  async_perpetual_request(Request const& request, ResponseParser& parser, RequestHandler&& handler) & ->
+    typename boost::asio::async_result<std::decay_t<RequestHandler>,
+                                       void(boost::system::error_code)>::return_type;
+
   template <class ShutdownHandler>
   auto
   async_shutdown(ShutdownHandler&& handler) & ->
@@ -97,6 +104,7 @@ using client_session = basic_client_session<
 
 #include <foxy/impl/client_session/async_connect.impl.hpp>
 #include <foxy/impl/client_session/async_request.impl.hpp>
+#include <foxy/impl/client_session/async_perpetual_request.impl.hpp>
 #include <foxy/impl/client_session/async_shutdown.impl.hpp>
 
 #endif // FOXY_CLIENT_SESSION_HPP_
