@@ -248,49 +248,51 @@ if (FOXY_FUZZ)
   target_link_options(uri-parser PRIVATE "-fsanitize=fuzzer")
 endif()
 
-# installation
-#
-install(
-  TARGETS
-    foxy
-  EXPORT
-    foxy-targets
-  LIBRARY DESTINATION lib/
-  ARCHIVE DESTINATION lib/
-  RUNTIME DESTINATION bin/
-)
+if (NOT FOXY_SKIP_INSTALL)
+  # installation
+  #
+  install(
+    TARGETS
+      foxy
+    EXPORT
+      foxy-targets
+    LIBRARY DESTINATION lib/
+    ARCHIVE DESTINATION lib/
+    RUNTIME DESTINATION bin/
+  )
 
-install(
-  EXPORT
-    foxy-targets
-  NAMESPACE Foxy::
-  DESTINATION lib/cmake/foxy
-)
+  install(
+    EXPORT
+      foxy-targets
+    NAMESPACE Foxy::
+    DESTINATION lib/cmake/foxy
+  )
 
-install(
-  DIRECTORY
-    include
+  install(
+    DIRECTORY
+      include
 
-  DESTINATION ${CMAKE_INSTALL_PREFIX}
-  FILES_MATCHING PATTERN "*.hpp"
-)
+    DESTINATION ${CMAKE_INSTALL_PREFIX}
+    FILES_MATCHING PATTERN "*.hpp"
+  )
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/foxy-config-version.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY AnyNewerVersion
-)
+  include(CMakePackageConfigHelpers)
+  write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/foxy-config-version.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+  )
 
-configure_package_config_file(
-  ${CMAKE_CURRENT_LIST_DIR}/cmake/foxy-config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/foxy-config.cmake
-  INSTALL_DESTINATION lib/cmake/foxy/
-)
+  configure_package_config_file(
+    ${CMAKE_CURRENT_LIST_DIR}/cmake/foxy-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/foxy-config.cmake
+    INSTALL_DESTINATION lib/cmake/foxy/
+  )
 
-install(
-    FILES
-      ${CMAKE_CURRENT_BINARY_DIR}/foxy-config.cmake
-      ${CMAKE_CURRENT_BINARY_DIR}/foxy-config-version.cmake
-    DESTINATION lib/cmake/foxy/
-)
+  install(
+      FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/foxy-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/foxy-config-version.cmake
+      DESTINATION lib/cmake/foxy/
+  )
+endif ()
